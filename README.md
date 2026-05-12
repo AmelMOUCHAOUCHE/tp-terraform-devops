@@ -17,14 +17,11 @@ Infrastructure AWS avec Terraform - Provider Docker, GitHub, puis AWS.
 
 ## Etape 1 — Provider Docker
 
-### Ce que j'ai fait
-Au lieu de créer des containers Docker manuellement avec `docker run`,
-j'ai décrit l'infrastructure dans des fichiers Terraform (`.tf`).
-Terraform crée, modifie ou détruit les ressources automatiquement.
-
-### Ressources créées
-- Un container **nginx** exposé sur le port 8081
-- Un réseau Docker **app-network**
+### le travail fait
+- Créé un container **nginx** exposé sur le port 8081
+- Créé un container **redis** sur le même réseau Docker
+- Vérifié l'**idempotence** : 2ème apply = 0 changes
+- Testé **terraform destroy** : 5 ressources supprimées proprement
 
 ### Commandes utilisées
 ```bash
@@ -35,3 +32,8 @@ terraform apply  # Crée vraiment les ressources
 
 ### Résultat
 - nginx répond sur http://localhost:8081
+- redis tourne sur le même réseau que nginx
+- terraform destroy supprime tout proprement
+
+
+
