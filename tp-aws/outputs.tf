@@ -27,3 +27,8 @@ output "db_endpoint" {
   description = "Endpoint de la base de données RDS"
   value       = aws_db_instance.main.endpoint
 }
+
+output "alb_dns_name" {
+  description = "DNS public de l'ALB"
+  value       = aws_lb.main.dns_name
+}
