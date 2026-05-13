@@ -35,5 +35,14 @@ terraform apply  # Crée vraiment les ressources
 - redis tourne sur le même réseau que nginx
 - terraform destroy supprime tout proprement
 
+## Etape 2 — Provider GitHub 
 
+### le travail fait
+- Créé un dépôt GitHub **tp-terraform-amel-demo** avec Terraform
+- Ajouté une protection de branche sur `main`
+- Ajouté un secret GitHub Actions `DATABASE_URL`
 
+### Résultat
+- Dépôt créé automatiquement sur GitHub
+- Branche main protégée
+- Secret DATABASE_URL configuré
