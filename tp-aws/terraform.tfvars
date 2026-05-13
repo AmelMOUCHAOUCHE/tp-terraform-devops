@@ -1,5 +1,5 @@
-project_name = "tp-terraform-tonprenom"
+project_name = "tp-terraform-amel"
 owner        = "amel.mouchaouche@efrei.fr"
 environment  = "dev"
 my_ip        = "176.183.133.177/32"
-db_password = "MonMotDePasse123!"
+db_password  = "MonMotDePasse123!"
