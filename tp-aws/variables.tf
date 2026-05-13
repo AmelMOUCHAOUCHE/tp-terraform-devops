@@ -46,3 +46,9 @@ variable "my_ip" {
   description = "Votre IP publique (format x.x.x.x/32)"
   type        = string
 }
+
+variable "db_password" {
+  description = "Mot de passe de la base de données"
+  type        = string
+  sensitive   = true
+}

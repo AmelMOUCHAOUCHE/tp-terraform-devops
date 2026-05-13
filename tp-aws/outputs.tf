@@ -22,3 +22,8 @@ output "s3_bucket_name" {
   description = "Nom du bucket S3"
   value       = aws_s3_bucket.assets.bucket
 }
+
+output "db_endpoint" {
+  description = "Endpoint de la base de données RDS"
+  value       = aws_db_instance.main.endpoint
+}

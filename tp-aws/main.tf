@@ -132,3 +132,72 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "assets" {
     }
   }
 }
+
+# ── Subnet privé ───────────────────────────────────
+resource "aws_subnet" "private" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[0]
+  map_public_ip_on_launch = false
+  tags = { Name = "${var.project_name}-private-subnet" }
+}
+
+resource "aws_subnet" "private_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[1]
+  map_public_ip_on_launch = false
+  tags = { Name = "${var.project_name}-private-subnet-2" }
+}
+
+# ── DB Subnet Group ────────────────────────────────
+resource "aws_db_subnet_group" "main" {
+  name       = "${var.project_name}-db-subnet-group"
+  subnet_ids = [aws_subnet.private.id, aws_subnet.private_2.id]
+  tags = { Name = "${var.project_name}-db-subnet-group" }
+}
+
+# ── Security Group RDS ─────────────────────────────
+resource "aws_security_group" "rds" {
+  name        = "${var.project_name}-rds-sg"
+  description = "Security Group pour RDS PostgreSQL"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web.id]
+    description     = "PostgreSQL depuis EC2 uniquement"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "${var.project_name}-rds-sg" }
+}
+
+# ── RDS PostgreSQL ─────────────────────────────────
+resource "aws_db_instance" "main" {
+  identifier        = "${var.project_name}-db"
+  engine            = "postgres"
+  engine_version    = "15"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+  storage_type      = "gp2"
+
+  db_name  = "appdb"
+  username = "dbadmin"
+  password = var.db_password
+
+  db_subnet_group_name   = aws_db_subnet_group.main.name
+  vpc_security_group_ids = [aws_security_group.rds.id]
+  publicly_accessible    = false
+  skip_final_snapshot    = true
+
+  tags = { Name = "${var.project_name}-db" }
+}

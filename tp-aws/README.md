@@ -67,8 +67,10 @@ OS     : Ubuntu 24.04.1 LTS - kernel 6.17.0-1012-aws x86_64
 IP     : 13.36.244.44
 Disque : 19G total, 17G disponible (volume gp3 20Go)
 
+
 ### Destruction des ressources
 
 ```bash
 terraform destroy
+# Destroy complete! Resources: 12 destroyed.
 ```
